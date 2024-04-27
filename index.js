@@ -47,6 +47,16 @@ async function run() {
       const result = await itemCollection.findOne(query);
       res.send(result);
     });
+    // data get by category
+    app.get('/AllArt&Crafts/:category',async(req,res)=>{
+      const category =req.params.category;
+      const query={subcategory_Name: category}
+      const cursor = itemCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result)
+    })
+
+
 
     // post
     app.post("/allArt&Crafts", async (req, res) => {
