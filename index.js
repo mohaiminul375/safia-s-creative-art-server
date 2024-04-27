@@ -56,7 +56,15 @@ async function run() {
       res.send(result)
     })
 
-
+  //get data by userName
+  app.get('/user/:email',async(req,res)=>{
+  const email = req.params.email;
+  console.log('email field',email);
+  const query = {userEmail: email};
+  const cursor = itemCollection.find(query)
+  const result = await cursor.toArray()
+  res.send(result)
+  })
 
     // post
     app.post("/allArt&Crafts", async (req, res) => {
