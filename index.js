@@ -48,23 +48,24 @@ async function run() {
       res.send(result);
     });
     // data get by category
-    app.get('/AllArt&Crafts/:category',async(req,res)=>{
-      const category =req.params.category;
-      const query={subcategory_Name: category}
+    app.get("/AllArt&Crafts/:category", async (req, res) => {
+      const category = req.params.category;
+      const query = { subcategory_Name: category };
       const cursor = itemCollection.find(query);
       const result = await cursor.toArray();
-      res.send(result)
-    })
+      res.send(result);
+    });
 
-  //get data by userName
-  app.get('/user/:email',async(req,res)=>{
-  const email = req.params.email;
-  console.log('email field',email);
-  const query = {userEmail: email};
-  const cursor = itemCollection.find(query)
-  const result = await cursor.toArray()
-  res.send(result)
-  })
+    //get data by userName
+    app.get("/user/:email/:customization", async (req, res) => {
+      const email = req.params.email;
+      const getCustomization= req.params.customization;
+      console.log('customization',getCustomization)
+      const query = { userEmail: email,customization:getCustomization };
+      const cursor = itemCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
 
     // post
     app.post("/allArt&Crafts", async (req, res) => {
