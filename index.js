@@ -7,7 +7,7 @@ require("dotenv").config();
 app.use(cors());
 app.use(express.json());
 
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ixszr3u.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -24,24 +24,32 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
     // Send a ping to confirm a successful connection
-    const itemCollection= client.db('art&craftBD').collection('items')
-    const categories= client.db('art&craftBD').collection('categories')
+    const itemCollection = client.db("art&craftBD").collection("items");
+    const categories = client.db("art&craftBD").collection("categories");
 
     // get
- app.get('/allArt&Crafts',async(req,res)=>{
-  const cursor =  itemCollection.find();
-  const result = await cursor.toArray()
-  res.send(result)
+    app.get("/allArt&Crafts", async (req, res) => {
+      const cursor = itemCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
 
- })
+    app.get("/categories", async (req, res) => {
+      const cursor = categories.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
 
- app.get('/categories',async(req,res)=>{
-  const cursor = categories.find();
-  const result= await cursor.toArray();
-  res.send(result)
- })
+    // get data by id
+    app.get("/Art&CraftDetails/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await itemCollection.findOne(query);
+      res.send(result);
+    });
+
     // post
-    app.post("/allArt&Crafts", async(req, res) => {
+    app.post("/allArt&Crafts", async (req, res) => {
       console.log(req.body);
       const item = req.body;
       const result = await itemCollection.insertOne(item);
