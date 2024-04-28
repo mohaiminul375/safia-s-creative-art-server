@@ -4,7 +4,12 @@ const cors = require("cors");
 const port = process.env.PORT || 5000;
 require("dotenv").config();
 // middleware
-app.use(cors());
+const corsOption = {
+  origin: ["http://localhost:5173"],
+  Credential: true,
+  optionSuccessStatus: 200,
+};
+app.use(cors(corsOption));
 app.use(express.json());
 
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
