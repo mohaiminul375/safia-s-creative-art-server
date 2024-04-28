@@ -41,7 +41,7 @@ async function run() {
     });
 
     // get data by id
-    app.get("/Art&CraftDetails/:id", async (req, res) => {
+    app.get("/Art&Crafts/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await itemCollection.findOne(query);
@@ -56,12 +56,31 @@ async function run() {
       res.send(result);
     });
 
-    //get data by userName
+    // get data only user
+    app.get("/user/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { userEmail: email };
+      const cursor = itemCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+    // put
+
+    // delete
+    app.delete("/Art&Crafts/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log("response delete", id);
+      const query = {_id: new ObjectId(id)}
+      const result =await itemCollection.deleteOne(query);
+      res.send(result)
+    });
+
+    //get data by userName and customization
     app.get("/user/:email/:customization", async (req, res) => {
       const email = req.params.email;
-      const getCustomization= req.params.customization;
-      console.log('customization',getCustomization)
-      const query = { userEmail: email,customization:getCustomization };
+      const getCustomization = req.params.customization;
+      console.log("customization", getCustomization);
+      const query = { userEmail: email, customization: getCustomization };
       const cursor = itemCollection.find(query);
       const result = await cursor.toArray();
       res.send(result);
