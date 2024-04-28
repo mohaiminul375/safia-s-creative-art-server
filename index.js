@@ -64,16 +64,6 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
-    // put
-
-    // delete
-    app.delete("/Art&Crafts/:id", async (req, res) => {
-      const id = req.params.id;
-      console.log("response delete", id);
-      const query = {_id: new ObjectId(id)}
-      const result =await itemCollection.deleteOne(query);
-      res.send(result)
-    });
 
     //get data by userName and customization
     app.get("/user/:email/:customization", async (req, res) => {
@@ -94,6 +84,37 @@ async function run() {
       res.send(result);
     });
 
+    // put
+    app.put("/Art&Crafts/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const option = { upsert: true };
+      const updateArtCraft = req.body;
+      const artCraft = {
+        $set: {
+          item_name: updateArtCraft.item_name,
+          customization: updateArtCraft.customization,
+          subcategory_Name: updateArtCraft.subcategory_Name,
+          photo: updateArtCraft.photo,
+          price: updateArtCraft.price,
+          rating: updateArtCraft.rating,
+          stockStatus: updateArtCraft.stockStatus,
+          description: updateArtCraft.description,
+          processing_time: updateArtCraft.processing_time,
+        },
+      };
+      const result = await itemCollection.updateOne(query, artCraft, option);
+      res.send(result);
+    });
+
+    // delete
+    app.delete("/Art&Crafts/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log("response delete", id);
+      const query = { _id: new ObjectId(id) };
+      const result = await itemCollection.deleteOne(query);
+      res.send(result);
+    });
     await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
