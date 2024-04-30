@@ -5,11 +5,11 @@ const port = process.env.PORT || 5000;
 require("dotenv").config();
 // middleware
 const corsOption = {
-  origin: ["http://localhost:5173"],
+  origin: ["http://localhost:5173","https://safias-art-and-craft.web.app"],
   Credential: true,
   optionSuccessStatus: 200,
 };
-app.use(cors(corsOption));
+app.use(cors());  
 app.use(express.json());
 
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
